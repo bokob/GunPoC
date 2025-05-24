@@ -574,7 +574,7 @@ public partial class @InputSystemActions: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""60743e32-f829-4b2f-a801-6e15e4429c2a"",
-                    ""path"": ""<Mouse>/leftButton"",
+                    ""path"": ""<Mouse>/rightButton"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -638,7 +638,7 @@ public partial class @InputSystemActions: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 },
                 {
-                    ""name"": ""LeftRight"",
+                    ""name"": ""RotateLeftRight"",
                     ""id"": ""af59e8c9-119a-477c-afbb-42836c448824"",
                     ""path"": ""2DVector"",
                     ""interactions"": """",

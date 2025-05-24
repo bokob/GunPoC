@@ -7,6 +7,7 @@ public class InGameScene : BaseScene
     {
         SceneType = SceneType.InGameScene;
         Managers.Sound.PlayBGM(BGM.InGameScene);
+        Time.timeScale = 1f;
         Debug.Log("인게임 씬 초기화");
     }
 

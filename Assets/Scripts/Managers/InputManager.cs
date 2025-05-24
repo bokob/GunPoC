@@ -90,12 +90,10 @@ public class InputManager
 
     void OnRelease(InputAction.CallbackContext context)
     {
-        Debug.Log("마법 방출");
     }
 
     void OnReload(InputAction.CallbackContext context)
     {
-        Debug.Log("마법 장전");
     }
 
     public void CancelAction()

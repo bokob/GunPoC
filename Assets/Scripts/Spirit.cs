@@ -9,12 +9,15 @@ public enum SpiritState
 
 public class Spirit : MonoBehaviour
 {
+    TrailRenderer _trailRenderer;
+
     [field: SerializeField] public SpiritState SpiritState { get; private set; } = SpiritState.Ascension;
     bool _isStop = false;
-
     float _speed = 1.5f;
     [SerializeField] float _spiritualPower = 0f;
-    TrailRenderer _trailRenderer;
+
+    Color _spiritColor = Color.white;       // 색깔
+    Color[] _spiritColors = new Color[] { Color.red, Color.blue, Color.green, Color.magenta };
 
     [Header("승천")]
     Vector2 _startPos;
@@ -22,6 +25,7 @@ public class Spirit : MonoBehaviour
     float _waveDirection;
 
     [Header("봉인")]
+    bool _isSealed = false;                 // 봉인 여부
     Vector3 _sealStartPos;                  // p1 (시작 지점)
     Vector3 _controlPoint;                  // p2 (컨트롤 포인트)
     Transform _destinationTransform;        // p3 (도착 지점)
@@ -32,6 +36,15 @@ public class Spirit : MonoBehaviour
     void Awake()
     {
         _trailRenderer = GetComponentInChildren<TrailRenderer>();
+
+        _spiritColor = _spiritColors[Random.Range(0, _spiritColors.Length)];
+        Gradient gradient = new Gradient();
+        gradient.SetKeys(
+            new GradientColorKey[] { new GradientColorKey(Color.white, 0.0f), new GradientColorKey(_spiritColor, 0.55f), new GradientColorKey(_spiritColor, 1.0f) },
+            new GradientAlphaKey[] { new GradientAlphaKey(1.0f, 0.0f), new GradientAlphaKey(200/255f, 0.55f), new GradientAlphaKey(1.0f, 1.0f) 
+            });
+
+        _trailRenderer.colorGradient = gradient;
     }
 
     void Start()
@@ -53,7 +66,7 @@ public class Spirit : MonoBehaviour
         if (_isStop && SpiritState == SpiritState.Seal)
             return;
 
-        if (Input.GetKeyDown(KeyCode.T))
+        if (!_isSealed && Input.GetKeyDown(KeyCode.LeftControl))
             SetSealed();
 
         switch (SpiritState)
@@ -82,10 +95,12 @@ public class Spirit : MonoBehaviour
     // 봉인 설정
     public void SetSealed(Transform collector = null)
     {
+        _isSealed = true;
+
         // p3 설정
         _destinationTransform = collector;
         if (_destinationTransform == null)
-            _destinationTransform = FindAnyObjectByType<PlayerController>().transform;
+            _destinationTransform = GameManager.Instance.PlayerTransform;
 
         // p1 설정
         _sealStartPos = transform.position;
@@ -122,7 +137,7 @@ public class Spirit : MonoBehaviour
             if (Vector2.Distance(transform.position, _destinationTransform.position) < 0.1f)
             {
                 _isStop = true;
-                _destinationTransform.GetComponent<PlayerController>().Drain(_spiritualPower);
+                //_destinationTransform.GetComponent<PlayerController>().Drain(_spiritualPower);
                 _trailRenderer.time = 0.3f;
                 transform.SetParent(_destinationTransform);
                 Destroy(gameObject, 5f);
