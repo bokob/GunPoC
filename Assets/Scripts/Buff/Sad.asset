@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f9ef9e910ddc58f43b9555fdec771cfc, type: 3}
+  m_Name: Sad
+  m_EditorClassIdentifier: 
+  buffName: "\uC2AC\uD514"
+  description: "\uD30C\uB780\uC0C9 \uC601\uD63C\uC744 \uD761\uC218 \uD6C4, \uC774\uB3D9\uC18D\uB3C4
+    0.5 \uC0C1\uC2B9"
+  statName: moveSpeed
+  duration: 10
+  effectValue: 0.5
+  icon: {fileID: 21300010, guid: dffef66376be4fa480fb02b19edbe903, type: 3}

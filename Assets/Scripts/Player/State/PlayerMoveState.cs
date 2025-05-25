@@ -6,6 +6,7 @@ public class PlayerMoveState : State
     PlayerFSM _playerFSM;
     Animator _anim;
     Rigidbody2D _rb;
+    PlayerStatus _playerStatus;
 
     float _moveSpeed = 2f;
     float _maxMoveSpeed = 4f;
@@ -25,6 +26,7 @@ public class PlayerMoveState : State
         _rb = GetComponent<Rigidbody2D>();
         _playerFSM = GetComponent<PlayerFSM>();
         _silhouette = GetComponent<Silhouette>();
+        _playerStatus = GetComponent<PlayerStatus>();
     }
 
     public override void OnStateEnter()
@@ -51,10 +53,10 @@ public class PlayerMoveState : State
     // Move 로직
     public void Move()
     {
-        if (_rb.linearVelocity.magnitude < _maxMoveSpeed)
+        if (_rb.linearVelocity.magnitude < _maxMoveSpeed * _playerStatus.MoveSpeed)
         {
             _playerFSM.Flip(_moveInput.x);
-            _rb.AddForce(_moveInput * _moveSpeed, ForceMode2D.Impulse);
+            _rb.AddForce(_moveInput * _playerStatus.MoveSpeed, ForceMode2D.Impulse);
         }
     }
 

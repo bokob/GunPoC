@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.UI;
 
 public class UI_StopCanvas : MonoBehaviour
 {
@@ -21,8 +20,8 @@ public class UI_StopCanvas : MonoBehaviour
         _cavnas.enabled = GameManager.Instance.IsPause; // 게임이 정지 상태가 아닐 때만 캔버스 활성화
     }
 
-    private void OnDestroy()
+    void OnDestroy()
     {
-        UI_InGameEventBus.OnPauseAction -= ToggleCanvas;
+        UI_InGameEventBus.OnPauseAction = null;
     }
 }

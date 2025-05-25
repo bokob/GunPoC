@@ -18,6 +18,7 @@ public class Spirit : MonoBehaviour
 
     Color _spiritColor = Color.white;       // 색깔
     Color[] _spiritColors = new Color[] { Color.red, Color.blue, Color.green, Color.magenta };
+    BuffType _buffType;
 
     [Header("승천")]
     Vector2 _startPos;
@@ -37,14 +38,8 @@ public class Spirit : MonoBehaviour
     {
         _trailRenderer = GetComponentInChildren<TrailRenderer>();
 
-        _spiritColor = _spiritColors[Random.Range(0, _spiritColors.Length)];
-        Gradient gradient = new Gradient();
-        gradient.SetKeys(
-            new GradientColorKey[] { new GradientColorKey(Color.white, 0.0f), new GradientColorKey(_spiritColor, 0.55f), new GradientColorKey(_spiritColor, 1.0f) },
-            new GradientAlphaKey[] { new GradientAlphaKey(1.0f, 0.0f), new GradientAlphaKey(200/255f, 0.55f), new GradientAlphaKey(1.0f, 1.0f) 
-            });
-
-        _trailRenderer.colorGradient = gradient;
+        int randomIdx = Random.Range(0, _spiritColors.Length);
+        SetGradient(randomIdx);
     }
 
     void Start()
@@ -73,9 +68,6 @@ public class Spirit : MonoBehaviour
         {
             case SpiritState.Ascension:
                 Ascend();
-                break;
-            case SpiritState.Seal:
-                Sealed();
                 break;
             default:
                 break;
@@ -137,7 +129,7 @@ public class Spirit : MonoBehaviour
             if (Vector2.Distance(transform.position, _destinationTransform.position) < 0.1f)
             {
                 _isStop = true;
-                //_destinationTransform.GetComponent<PlayerController>().Drain(_spiritualPower);
+                _destinationTransform.GetComponent<PlayerStatus>().AddBuff(_buffType);
                 _trailRenderer.time = 0.3f;
                 transform.SetParent(_destinationTransform);
                 Destroy(gameObject, 5f);
@@ -149,9 +141,26 @@ public class Spirit : MonoBehaviour
         }
     }
 
-    // 봉인당하기
-    public void Sealed()
+    public void SetGradient(int idx)
     {
+        _spiritColor = _spiritColors[idx];
+        _buffType = Util.IntToEnum<BuffType>(idx);
 
+        Gradient gradient = new Gradient();
+        gradient.SetKeys(
+            new GradientColorKey[] { new GradientColorKey(Color.white, 0.0f), new GradientColorKey(_spiritColor, 0.55f), new GradientColorKey(_spiritColor, 1.0f) },
+            new GradientAlphaKey[] { new GradientAlphaKey(1.0f, 0.0f), new GradientAlphaKey(200/255f, 0.55f), new GradientAlphaKey(1.0f, 1.0f)
+            });
+
+        _trailRenderer.colorGradient = gradient;
     }
+
+    // 테스트용 코드
+    public void SetSpirit(BuffType buffType)
+    {
+        _trailRenderer = GetComponentInChildren<TrailRenderer>();
+        int idx = (int)buffType;
+        SetGradient(idx);
+    }
+
 }

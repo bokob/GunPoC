@@ -15,10 +15,11 @@ public class PlayerAimWeapon : MonoBehaviour
     Transform _aimGunEndPointTransform;
     Transform _shellPositionTransform;
     Animator _anim;
+    PlayerStatus _playerStatus;
 
     [SerializeField] GameObject _ammoPrefab;
 
-    float _shootPower = 50f;
+    float _shootPower = 10f;
 
     Vector2 _prevMouseWorldPos;
 
@@ -28,6 +29,7 @@ public class PlayerAimWeapon : MonoBehaviour
         _anim = _aimTransform.GetComponent<Animator>();
         _aimGunEndPointTransform = _aimTransform.Find("GunEndPointPosition");
         _shellPositionTransform = _aimTransform.Find("ShellPosition");
+        _playerStatus = GetComponent<PlayerStatus>();
     }
 
     void Update() 
@@ -75,7 +77,7 @@ public class PlayerAimWeapon : MonoBehaviour
 
             GameObject ammoInstance = Instantiate(_ammoPrefab, _aimGunEndPointTransform.position, Quaternion.identity);
             ammoInstance.transform.right = _aimGunEndPointTransform.right;
-            ammoInstance.GetComponent<Rigidbody2D>().AddForce(ammoInstance.transform.right * _shootPower, ForceMode2D.Impulse);
+            ammoInstance.GetComponent<Rigidbody2D>().AddForce(ammoInstance.transform.right * _shootPower * _playerStatus.AttackSpeed, ForceMode2D.Impulse);
         }
     }
 
